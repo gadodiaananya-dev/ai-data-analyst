@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.streamlit/secrets.toml
+.pytest_cache/
+.vscode/
+data/sample_sales.csv
+data/sample_sales.csv.csv
+sample_sales.csv.csv
+results/old/
+speedtest.py

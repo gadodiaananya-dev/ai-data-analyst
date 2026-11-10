@@ -1,0 +1,9 @@
+streamlit>=1.50
+pandas
+duckdb
+plotly
+openpyxl
+python-dotenv
+google-genai
+scikit-learn
+scipy
