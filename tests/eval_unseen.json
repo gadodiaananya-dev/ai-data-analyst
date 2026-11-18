@@ -1,0 +1,12 @@
+[
+  {"id": 1, "difficulty": "easy", "type": "answer", "question": "What is the average sales amount per row for the Corporate segment?", "gold_sql": "SELECT AVG(sales) FROM data WHERE segment = 'Corporate'"},
+  {"id": 2, "difficulty": "easy", "type": "answer", "question": "How many different cities are there in the West region?", "gold_sql": "SELECT COUNT(DISTINCT city) FROM data WHERE region = 'West'"},
+  {"id": 3, "difficulty": "easy", "type": "answer", "question": "How many rows have a customer rating of 5?", "gold_sql": "SELECT COUNT(*) FROM data WHERE customer_rating = 5"},
+  {"id": 4, "difficulty": "medium", "type": "answer", "question": "What is the total shipping cost for rows paid by Credit Card?", "gold_sql": "SELECT SUM(shipping_cost) FROM data WHERE payment_method = 'Credit Card'"},
+  {"id": 5, "difficulty": "medium", "type": "answer", "question": "What is the total profit for Critical priority rows in 2022?", "gold_sql": "SELECT SUM(profit) FROM data WHERE order_priority = 'Critical' AND year(order_date) = 2022"},
+  {"id": 6, "difficulty": "medium", "type": "answer", "question": "Top 3 states by total profit", "gold_sql": "SELECT state, SUM(profit) AS p FROM data WHERE state IS NOT NULL GROUP BY state ORDER BY p DESC LIMIT 3"},
+  {"id": 7, "difficulty": "hard", "type": "answer", "question": "Which ship mode has the lowest average shipping cost?", "gold_sql": "SELECT ship_mode FROM data WHERE ship_mode IS NOT NULL GROUP BY ship_mode ORDER BY AVG(shipping_cost) ASC LIMIT 1"},
+  {"id": 8, "difficulty": "hard", "type": "answer", "question": "What percentage of total sales comes from the Technology category?", "gold_sql": "SELECT 100.0 * SUM(sales) FILTER (WHERE category = 'Technology') / SUM(sales) FROM data"},
+  {"id": 9, "difficulty": "hard", "type": "answer", "question": "Which year had the highest total profit?", "gold_sql": "SELECT year(order_date) FROM data WHERE order_date IS NOT NULL GROUP BY 1 ORDER BY SUM(profit) DESC LIMIT 1"},
+  {"id": 10, "difficulty": "hard", "type": "answer", "question": "How many sales reps have a total profit above 100000?", "gold_sql": "SELECT COUNT(*) FROM (SELECT sales_rep FROM data WHERE sales_rep IS NOT NULL GROUP BY sales_rep HAVING SUM(profit) > 100000)"}
+]
