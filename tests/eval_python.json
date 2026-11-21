@@ -1,0 +1,10 @@
+[
+  {"id": 1, "difficulty": "easy", "question": "Is discount correlated with profit? Give the correlation coefficient.", "gold_python": "sub = df[['discount','profit']].dropna(); expected = sub['discount'].corr(sub['profit'])", "check": "number"},
+  {"id": 2, "difficulty": "easy", "question": "What is the correlation between unit price and sales?", "gold_python": "sub = df[['unit_price','sales']].dropna(); expected = sub['unit_price'].corr(sub['sales'])", "check": "number"},
+  {"id": 3, "difficulty": "easy", "question": "What is the standard deviation of sales?", "gold_python": "expected = df['sales'].std()", "check": "number"},
+  {"id": 4, "difficulty": "medium", "question": "What is the 90th percentile of the sales distribution?", "gold_python": "expected = df['sales'].quantile(0.9)", "check": "number"},
+  {"id": 5, "difficulty": "medium", "question": "How many outliers are there in sales using the IQR method?", "gold_python": "s = df['sales'].dropna(); q1, q3 = s.quantile([0.25, 0.75]); iqr = q3 - q1; expected = int(((s < q1 - 1.5*iqr) | (s > q3 + 1.5*iqr)).sum())", "check": "number"},
+  {"id": 6, "difficulty": "medium", "question": "Find unusual orders: add up sales per order_id, then show the 5 orders with the highest sales z-score, including their total sales.", "gold_python": "expected = df.dropna(subset=['order_id','sales']).groupby('order_id')['sales'].sum().nlargest(5).tolist()", "check": "all_numbers"},
+  {"id": 7, "difficulty": "hard", "question": "Forecast the next 3 months of sales", "gold_python": "expected = 3", "check": "forecast_rows"},
+  {"id": 8, "difficulty": "hard", "question": "Cluster customers into 3 groups by total sales and profit", "gold_python": "expected = 3", "check": "three_groups"}
+]
