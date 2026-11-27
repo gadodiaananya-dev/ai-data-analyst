@@ -2,6 +2,7 @@ import os
 import re
 import time
 import httpx
+import pandas as pd
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types, errors
@@ -78,17 +79,27 @@ def summarize_result(question, df, max_rows=30):
     """Short plain-English answer based on the result table. Never crashes the app."""
     if df is None or df.empty:
         return "No rows matched this question."
+
+    if len(df) > max_rows:
+        # keep the start AND the end: forecasts and latest values are at the end of the table
+        shown = pd.concat([df.head(10), df.tail(max_rows - 10)])
+        note = f"{len(df)} rows in total, showing the first 10 and the last {max_rows - 10}"
+    else:
+        shown, note = df, f"{len(df)} rows"
+
     prompt = (
         f"Question: {question}\n\n"
-        f"Result table ({len(df)} rows in total, showing up to {max_rows}):\n"
-        f"{df.head(max_rows).to_csv(index=False)}\n"
+        f"Result table ({note}):\n"
+        f"{shown.to_csv(index=False)}\n"
         "Write a 2-3 sentence plain-English answer for a business manager. "
-        "Use the real numbers from the table. Do not mention SQL or tables. "
-        "Do not invent facts that are not in the table."
+        "Use the real numbers and the exact dates from the table. "
+        "If a column marks rows as forecast or predicted, say that those values are forecasts. "
+        "Do not mention SQL or tables. Do not invent facts that are not in the table."
     )
     try:
         contents = [types.Content(role="user", parts=[types.Part(text=prompt)])]
-        return _generate(contents, "You are a clear, concise business analyst.", 0.2).strip()
+        text = _generate(contents, "You are a clear, concise business analyst.", 0.2).strip()
+        return text.replace("$", r"\$")        # stops the page from reading $...$ as maths
     except Exception:
         return None
 
